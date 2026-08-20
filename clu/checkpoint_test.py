@@ -60,6 +60,10 @@ class CheckpointTest(tf.test.TestCase):
     self.assertEqual(
         checkpoint.safe_normpath("gs://test_dir/"), "gs://test_dir")
 
+  def test_from_path_raises_on_invalid_checkpoint(self):
+    with self.assertRaisesRegex(RuntimeError, "Invalid checkpoint format"):
+      checkpoint.CheckpointInfo.from_path("not-a-checkpoint")
+
   def test_initialize_mkdir(self):
     base_dir = os.path.join(tempfile.mkdtemp(), "test")
     state = TrainState(step=1)
